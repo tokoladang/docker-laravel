@@ -19,8 +19,10 @@ RUN set -ex; \
         $PHPIZE_DEPS \
         bzip2-dev \
         freetype-dev \
+        imagemagick-dev \
         libjpeg-turbo-dev \
         libpng-dev \
+        libtool \
         libwebp-dev \
         libxpm-dev \
         libzip-dev \
