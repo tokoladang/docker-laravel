@@ -2,6 +2,7 @@ FROM php:7.4-fpm-alpine3.12
 
 RUN apk add --no-cache \
     nginx \
+    imagemagick \
     libzip \
     libpng \
     libwebp \
