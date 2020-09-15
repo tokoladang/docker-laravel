@@ -24,14 +24,17 @@ RUN set -ex; \
         libwebp-dev \
         libxpm-dev \
         libzip-dev \
+        pcre-dev \
         postgresql-dev \
         zlib-dev \
     ; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install bz2 gd opcache zip bcmath pdo_pgsql; \
+    docker-php-ext-install exif bz2 gd opcache zip bcmath pdo_pgsql pdo_mysql; \
     pecl install redis-5.2.0; \
     docker-php-ext-enable redis; \
+    pecl install imagick-3.4.4; \
+    docker-php-ext-enable imagick; \
     apk del .build-deps
 
 RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
@@ -39,10 +42,10 @@ RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/instal
     php -r "if (hash_file('SHA384', 'composer-setup.php') === '${EXPECTED_COMPOSER_SIGNATURE}') { echo 'Composer.phar Installer verified'; } else { echo 'Composer.phar Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
     php composer-setup.php --install-dir=/usr/bin --filename=composer && \
     php -r "unlink('composer-setup.php');" && \
-    addgroup -g 1000 -S tokoladang && \
-    adduser -s /bin/sh -D -u 1000 -S tokoladang -G tokoladang && \
-    mkdir /home/tokoladang/app && \
-    chown tokoladang:tokoladang /home/tokoladang/app
+    addgroup -g 1000 -S ladang && \
+    adduser -s /bin/sh -D -u 1000 -S ladang -G ladang && \
+    mkdir /home/ladang/app && \
+    chown ladang:ladang /home/ladang/app
 
 
 COPY etc /etc
@@ -50,9 +53,9 @@ COPY etc /etc
 COPY run.sh /run.sh
 RUN chmod u+rwx /run.sh
 
-COPY --chown=tokoladang:tokoladang index.php /home/tokoladang/app/public/index.php
+COPY --chown=ladang:ladang index.php /home/ladang/app/public/index.php
 
-WORKDIR /home/tokoladang/app
+WORKDIR /home/ladang/app
 
 EXPOSE 443 80
 
