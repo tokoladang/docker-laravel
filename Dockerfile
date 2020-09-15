@@ -31,9 +31,9 @@ RUN set -ex; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
     docker-php-ext-install exif bz2 gd opcache zip bcmath pdo_pgsql pdo_mysql; \
-    pecl install redis-5.2.0; \
+    pecl install redis; \
     docker-php-ext-enable redis; \
-    pecl install imagick-3.4.4; \
+    pecl install imagick; \
     docker-php-ext-enable imagick; \
     apk del .build-deps
 
