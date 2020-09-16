@@ -1,1 +1,1 @@
-# Docker Image Tokoladang
+# Docker Image Tokoladang for CI
