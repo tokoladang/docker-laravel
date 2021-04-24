@@ -1,8 +1,7 @@
-FROM php:7.4-fpm-alpine3.12
+FROM php:8-alpine
 
 RUN apk add --no-cache \
     nginx \
-    imagemagick \
     libzip \
     libpng \
     libwebp \
@@ -20,7 +19,6 @@ RUN set -ex; \
         $PHPIZE_DEPS \
         bzip2-dev \
         freetype-dev \
-        imagemagick-dev \
         libjpeg-turbo-dev \
         libpng-dev \
         libtool \
@@ -33,11 +31,9 @@ RUN set -ex; \
     ; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install pcntl exif bz2 gd opcache zip bcmath pdo_pgsql pdo_mysql; \
+    docker-php-ext-install pcntl exif bz2 gd opcache zip bcmath pdo_pgsql; \
     pecl install redis; \
     docker-php-ext-enable redis; \
-    pecl install imagick; \
-    docker-php-ext-enable imagick; \
     apk del .build-deps
 
 RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig) && \
