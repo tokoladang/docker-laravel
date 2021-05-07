@@ -1,4 +1,4 @@
-FROM tokoladang/laravel:latest
+FROM tokoladang/laravel:siplah
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
