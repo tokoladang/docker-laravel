@@ -1,6 +1,7 @@
 FROM php:8-fpm-alpine
 
 RUN apk add --no-cache \
+    tzdata \
     nginx \
     libzip \
     libpng \
@@ -46,6 +47,7 @@ RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/instal
     mkdir /home/ladang/app && \
     chown ladang:ladang /home/ladang/app
 
+COPY /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 COPY etc /etc
 
