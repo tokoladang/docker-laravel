@@ -13,6 +13,8 @@ RUN apk add --no-cache \
     unzip \
     supervisor
 
+ENV TZ Asia/Jakarta
+
 # Install dependencies
 RUN set -ex; \
     \
@@ -47,7 +49,7 @@ RUN EXPECTED_COMPOSER_SIGNATURE=$(wget -q -O - https://composer.github.io/instal
     mkdir /home/ladang/app && \
     chown ladang:ladang /home/ladang/app
 
-COPY /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+# COPY /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 COPY etc /etc
 
