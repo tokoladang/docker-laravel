@@ -39,7 +39,7 @@ RUN set -ex; \
         zlib-dev \
         curl-dev \
         openssl-dev \
-        pcre2-dev
+        pcre2-dev \
     ; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
