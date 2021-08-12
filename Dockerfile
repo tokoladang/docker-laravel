@@ -16,7 +16,7 @@ RUN \
     freetype \
     postgresql-libs \
     unzip \
-    libstdc++ && \
+    libstdc++ \
     supervisor
 
 ENV TZ Asia/Jakarta
