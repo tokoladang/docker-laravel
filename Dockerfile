@@ -34,7 +34,7 @@ RUN set -ex; \
     ; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install pcntl exif bz2 gd opcache zip bcmath pdo_pgsql; \
+    docker-php-ext-install pcntl exif bz2 gd opcache zip bcmath pdo_pgsql sockets; \
     pecl install redis; \
     docker-php-ext-enable redis; \
     apk del .build-deps
