@@ -53,7 +53,7 @@ RUN set -ex; \
     docker-php-ext-configure swoole \
         --enable-http2   \
         --enable-openssl \
-        --enable-swoole-curl --enable-swoole-json && \
+        --enable-sockets --enable-swoole-curl --enable-swoole-json && \
     docker-php-ext-install -j$(nproc) swoole && \
     rm -f swoole.tar.gz $HOME/.composer/*-old.phar && \
     docker-php-source delete && \
