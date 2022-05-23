@@ -1,9 +1,9 @@
-name: Docker Swoole Siplah
+name: Docker Swoole Laravel
 
 on:
   push:
     branches:
-      - siplah-swoole
+      - master
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -13,7 +13,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read

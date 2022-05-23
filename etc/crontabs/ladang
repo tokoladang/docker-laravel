@@ -1,2 +1,3 @@
 *       *       *       *       *       php /home/ladang/app/artisan schedule:run >> /dev/null 2>&1
-0       *       *       *       *       php /home/ladang/app/artisan queue:restart >> /dev/null 2>&1
+0       *       *       *       *       php /home/ladang/app/artisan horizon:terminate >> /dev/null 2>&1
+*/5     *       *       *       *       php /home/ladang/app/artisan horizon:snapshot >> /dev/null 2>&1

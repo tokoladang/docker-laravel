@@ -1,20 +1,14 @@
-FROM php:8.0-cli-alpine3.12
+FROM php:8.1-cli-alpine3.15
 
 RUN \
     curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
     chmod +x /usr/bin/composer                                                                     && \
-    composer self-update --clean-backups 2.0.8                                    && \
+    composer self-update --clean-backups 2.2.6                                    && \
     apk update && \
     apk add --no-cache \
     tzdata \
-    nginx \
     libzip \
-    libpng \
-    libwebp \
-    libjpeg-turbo \
-    libxpm \
-    freetype \
-    postgresql-libs \
+    libpq \
     unzip \
     libstdc++ \
     supervisor
@@ -27,23 +21,17 @@ RUN set -ex; \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         bzip2-dev \
-        freetype-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
+        curl-dev \
         libtool \
-        libwebp-dev \
-        libxpm-dev \
         libzip-dev \
+        openssl-dev \
         pcre-dev \
+        pcre2-dev \
         postgresql-dev \
         zlib-dev \
-        curl-dev \
-        openssl-dev \
-        pcre2-dev \
     ; \
     \
-    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install pcntl exif bz2 gd opcache zip bcmath pdo_pgsql sockets; \
+    docker-php-ext-install pcntl exif bz2 opcache zip bcmath pdo_pgsql sockets; \
     pecl install redis; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
@@ -52,6 +40,7 @@ RUN set -ex; \
     tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
     docker-php-ext-configure swoole \
         --enable-http2   \
+        --enable-swoole-pgsql \
         --enable-openssl \
         --enable-sockets --enable-swoole-curl --enable-swoole-json && \
     docker-php-ext-install -j$(nproc) swoole && \
@@ -66,14 +55,12 @@ RUN addgroup -g 1000 -S ladang && \
 
 COPY etc /etc
 
-COPY run.sh /run.sh
-RUN chmod u+rwx /run.sh
-
-COPY --chown=ladang:ladang index.php /home/ladang/app/public/index.php
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod u+rwx /entrypoint.sh
 
 WORKDIR /home/ladang/app
 
-EXPOSE 80
+EXPOSE 8080
 
-ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["app"]
