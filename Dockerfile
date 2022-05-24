@@ -53,14 +53,11 @@ RUN addgroup -g 1000 -S ladang && \
     mkdir /home/ladang/app && \
     chown ladang:ladang /home/ladang/app
 
-COPY etc /etc
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod u+rwx /entrypoint.sh
+COPY ./rootfilesystem/ /
 
 WORKDIR /home/ladang/app
 
-EXPOSE 8080
+EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["app"]
