@@ -3,7 +3,7 @@
 if [ "$1" = 'app' ]; then
 
     # Reset Supervisor Configuration
-    exec reset-supervisor.sh
+    reset-supervisor.sh
 
     if [[ "${ENABLE_SERVER}" = "1" ]] ; then
         mv /etc/supervisor.d/swoole.disabled /etc/supervisor.d/swoole.ini
@@ -18,5 +18,5 @@ if [ "$1" = 'app' ]; then
         mv /etc/supervisor.d/autoreload.disabled /etc/supervisor.d/autoreload.ini
     fi
 
-    exec supervisord -n -c "/etc/supervisord.conf"
+    /usr/bin/supervisord -c /etc/supervisord.conf -n
 fi
