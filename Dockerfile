@@ -1,19 +1,26 @@
 FROM php:8.1-cli-alpine3.15
 
+ENV ENABLE_SERVER=1
+ENV ENABLE_WORKER=0
+
+# for development only
+ENV ENABLE_AUTORELOAD=0
+
+ENV TZ Asia/Jakarta
+
 RUN \
     curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
     chmod +x /usr/bin/composer                                                                     && \
     composer self-update --clean-backups 2.2.6                                    && \
     apk update && \
     apk add --no-cache \
+    inotify-tools \
     tzdata \
     libzip \
     libpq \
     unzip \
     libstdc++ \
     supervisor
-
-ENV TZ Asia/Jakarta
 
 # Install dependencies
 RUN set -ex; \
