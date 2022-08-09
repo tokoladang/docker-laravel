@@ -57,14 +57,15 @@ RUN set -ex; \
     pecl install redis; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
-    mkdir /usr/src/php/ext/openswoole && \
-    curl -sfL https://github.com/openswoole/swoole-src/archive/v4.11.1.tar.gz -o swoole.tar.gz && \
-    tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/openswoole && \
-    docker-php-ext-configure openswoole \
+    mkdir /usr/src/php/ext/swoole && \
+    curl -sfL https://github.com/swoole/swoole-src/v5.0.0.tar.gz -o swoole.tar.gz && \
+    tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
+    docker-php-ext-configure swoole \
         --enable-http2   \
+        --enable-swoole-pgsql \
         --enable-openssl \
-        --enable-sockets --enable-swoole-curl --enable-swoole-json --with-postgres && \
-    docker-php-ext-install -j$(nproc) --ini-name zzz-docker-php-ext-openswoole.ini openswoole && \
+        --enable-sockets --enable-swoole-curl --enable-swoole-json && \
+    docker-php-ext-install -j$(nproc) swoole && \
     rm -f swoole.tar.gz $HOME/.composer/*-old.phar && \
     docker-php-source delete && \
     apk del .build-deps
