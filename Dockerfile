@@ -1,4 +1,4 @@
-FROM php:8.1-cli-alpine3.15
+FROM php:8.2-cli-alpine
 
 ENV ENABLE_SERVER=1
 ENV ENABLE_WORKER=0
@@ -40,6 +40,7 @@ RUN set -ex; \
         curl-dev \
         libtool \
         libzip-dev \
+        linux-headers \
         openssl-dev \
         pcre-dev \
         pcre2-dev \
@@ -58,7 +59,7 @@ RUN set -ex; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
     mkdir /usr/src/php/ext/swoole && \
-    curl -sfL https://github.com/swoole/swoole-src/archive/v5.0.0.tar.gz -o swoole.tar.gz && \
+    curl -sfL https://github.com/swoole/swoole-src/archive/v5.0.1.tar.gz -o swoole.tar.gz && \
     tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
     docker-php-ext-configure swoole \
         --enable-swoole-pgsql \
