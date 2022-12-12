@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-
+      - 8.1
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
