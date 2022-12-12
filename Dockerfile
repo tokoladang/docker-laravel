@@ -40,6 +40,7 @@ RUN set -ex; \
         curl-dev \
         libtool \
         libzip-dev \
+        linux-headers \
         openssl-dev \
         pcre-dev \
         pcre2-dev \
