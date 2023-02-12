@@ -15,7 +15,7 @@ ENV TZ Asia/Jakarta
 RUN \
     curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
     chmod +x /usr/bin/composer                                                                     && \
-    composer self-update --clean-backups 2.2.6                                    && \
+    composer self-update --clean-backups && \
     apk update && \
     apk add --no-cache \
     inotify-tools \
