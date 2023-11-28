@@ -20,3 +20,5 @@ if [ "$1" = 'app' ]; then
 
     /usr/bin/supervisord -c /etc/supervisord.conf -n
 fi
+
+exec "$@"

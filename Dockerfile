@@ -37,11 +37,9 @@ RUN set -ex; \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         bzip2-dev \
-        curl-dev \
         libtool \
         libzip-dev \
         linux-headers \
-        openssl-dev \
         pcre-dev \
         pcre2-dev \
         postgresql-dev \
@@ -54,17 +52,13 @@ RUN set -ex; \
     ; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install pcntl exif bz2 gd opcache zip bcmath pdo_pgsql sockets; \
-    pecl install redis; \
+    docker-php-ext-install -j$(nproc) pcntl exif bz2 gd opcache zip bcmath pdo_pgsql; \
+    pecl install redis-6.0.2; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
     mkdir /usr/src/php/ext/swoole && \
     curl -sfL https://github.com/swoole/swoole-src/archive/v5.1.1.tar.gz -o swoole.tar.gz && \
     tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
-    docker-php-ext-configure swoole \
-        --enable-swoole-pgsql \
-        --enable-openssl \
-        --enable-sockets --enable-swoole-curl && \
     docker-php-ext-install -j$(nproc) swoole && \
     rm -f swoole.tar.gz $HOME/.composer/*-old.phar && \
     docker-php-source delete && \
