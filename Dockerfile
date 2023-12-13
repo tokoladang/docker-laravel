@@ -52,7 +52,7 @@ RUN set -ex; \
     ; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install -j$(nproc) pcntl exif bz2 gd opcache zip bcmath pdo_pgsql; \
+    docker-php-ext-install -j$(nproc) bcmath bz2 exif gd opcache pcntl pdo_pgsql sockets zip; \
     pecl install redis-6.0.2; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
