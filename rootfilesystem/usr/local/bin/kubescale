@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+DEPLOYMENT_NAME="$1"
+NUMBER_OF_REPLICAS="$2"
+
+APISERVER=https://kubernetes.default.svc
+SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
+TOKEN=$(cat ${SERVICEACCOUNT}/token)
+CACERT=${SERVICEACCOUNT}/ca.crt
+
+PAYLOAD="{\"spec\":{\"replicas\":$NUMBER_OF_REPLICAS}}"
+
+curl --cacert ${CACERT} \
+     --header "Content-Type: application/strategic-merge-patch+json" \
+     --header "Authorization: Bearer ${TOKEN}" \
+     --data "${PAYLOAD}" \
+     -X PATCH \
+     ${APISERVER}/apis/apps/v1/namespaces/${NAMESPACE}/deployments/${DEPLOYMENT_NAME}
