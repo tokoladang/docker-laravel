@@ -6,6 +6,7 @@ WATCH_LIST='
     /home/ladang/app/config/ 
     /home/ladang/app/resources/ 
     /home/ladang/app/routes/
+    /home/ladang/app/.env
 '
 
 while true ; do
@@ -13,8 +14,8 @@ while true ; do
         if [[ "php" == "${file##*.}" ]] ; then
             break
         fi
-    done < <(inotifywait -r -q -m --format "%f" -e create,delete,modify,move ${WATCH_LIST})
+    done < <(inotifywait -r -q --format "%f" -e create,delete,modify,move ${WATCH_LIST})
 
-    exec php /home/ladang/app/artisan octane:reload --server=swoole
+    exec php /home/ladang/app/artisan octane:reload
     sleep 2
 done
