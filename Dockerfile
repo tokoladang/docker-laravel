@@ -10,7 +10,7 @@ ENV OCTANE_WORKER=auto
 ENV OCTANE_TASK_WORKER=auto
 ENV OCTANE_MAX_REQUESTS=500
 
-ENV TZ Asia/Jakarta
+ENV TZ=Asia/Jakarta
 
 RUN \
     curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
