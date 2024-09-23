@@ -56,7 +56,7 @@ jobs:
           mv "${{ steps.meta.outputs.bake-file }}" "/tmp/bake-meta.json"
       -
         name: Upload meta bake definition
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bake-meta
           path: /tmp/bake-meta.json
@@ -80,7 +80,7 @@ jobs:
       -
         name: Build
         id: bake
-        uses: docker/bake-action@v4
+        uses: docker/bake-action@v5
         with:
           files: |
             ./docker-bake.hcl
@@ -100,7 +100,7 @@ jobs:
           touch "/tmp/digests/${digest#sha256:}"
       -
         name: Upload digest
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: digests
           path: /tmp/digests/*
@@ -114,13 +114,13 @@ jobs:
     steps:
       -
         name: Download meta bake definition
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: bake-meta
           path: /tmp
       -
         name: Download digests
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: digests
           path: /tmp/digests
