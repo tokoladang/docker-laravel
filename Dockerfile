@@ -1,4 +1,4 @@
-FROM php:8.3-cli-alpine
+FROM php:8.4-cli-alpine
 
 ENV ENABLE_SERVER=1
 ENV ENABLE_WORKER=0
@@ -53,11 +53,11 @@ RUN set -ex; \
     \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
     docker-php-ext-install -j$(nproc) bcmath bz2 exif gd opcache pcntl pdo_pgsql sockets zip; \
-    pecl install redis-6.0.2; \
+    pecl install redis-6.1.0; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
     mkdir /usr/src/php/ext/swoole && \
-    curl -sfL https://github.com/swoole/swoole-src/archive/v5.1.4.tar.gz -o swoole.tar.gz && \
+    curl -sfL https://github.com/swoole/swoole-src/archive/v6.0.0.tar.gz -o swoole.tar.gz && \
     tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
     docker-php-ext-install -j$(nproc) swoole && \
     rm -f swoole.tar.gz $HOME/.composer/*-old.phar && \
