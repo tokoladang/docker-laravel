@@ -16,7 +16,7 @@ jobs:
       matrix: ${{ steps.platforms.outputs.matrix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Create matrix
         id: platforms
@@ -60,7 +60,7 @@ jobs:
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Download meta bake definition
         uses: actions/download-artifact@v4
@@ -83,7 +83,7 @@ jobs:
 
       - name: Build
         id: bake
-        uses: docker/bake-action@v6
+        uses: docker/bake-action@v5
         with:
           files: |
             ./docker-bake.hcl
