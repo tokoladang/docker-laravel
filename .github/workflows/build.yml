@@ -38,7 +38,7 @@ jobs:
           mv "${{ steps.meta.outputs.bake-file }}" "/tmp/bake-meta.json"          
 
       - name: Upload meta bake definition
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: bake-meta
           path: /tmp/bake-meta.json
@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download meta bake definition
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v4
         with:
           name: bake-meta
           path: /tmp
@@ -103,7 +103,7 @@ jobs:
           touch "/tmp/digests/${digest#sha256:}"
 
       - name: Upload digest
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: digests-${{ env.PLATFORM_PAIR }}
           path: /tmp/digests/*
@@ -116,13 +116,13 @@ jobs:
       - build
     steps:
       - name: Download meta bake definition
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v4
         with:
           name: bake-meta
           path: /tmp
 
       - name: Download digests
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
           pattern: digests-*
