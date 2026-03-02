@@ -22,11 +22,6 @@ RUN \
     tzdata \
     libzip \
     libpq \
-    freetype \
-    libpng \
-    libwebp \
-    libjpeg-turbo \
-    libxpm \
     unzip \
     libstdc++ \
     supervisor
@@ -44,20 +39,14 @@ RUN set -ex; \
         pcre2-dev \
         postgresql-dev \
         zlib-dev \
-        libwebp-dev \
-        libxpm-dev \
-        freetype-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
     ; \
     \
-    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install -j$(nproc) bcmath bz2 exif gd opcache pcntl pdo_pgsql sockets zip; \
+    docker-php-ext-install -j$(nproc) bcmath bz2 exif pcntl pdo_pgsql sockets zip; \
     pecl install redis-6.3.0; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
     mkdir /usr/src/php/ext/swoole && \
-    curl -sfL https://github.com/swoole/swoole-src/archive/v6.1.3.tar.gz -o swoole.tar.gz && \
+    curl -sfL https://github.com/swoole/swoole-src/archive/v6.2.0-rc1.tar.gz -o swoole.tar.gz && \
     tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
     docker-php-ext-install -j$(nproc) swoole && \
     rm -f swoole.tar.gz $HOME/.composer/*-old.phar && \
