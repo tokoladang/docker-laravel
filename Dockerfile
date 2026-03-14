@@ -41,12 +41,13 @@ RUN set -ex; \
         zlib-dev \
     ; \
     \
-    docker-php-ext-install -j$(nproc) bcmath bz2 exif pcntl pdo_pgsql sockets zip; \
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
+    docker-php-ext-install -j$(nproc) bcmath bz2 exif gd opcache pcntl pdo_pgsql sockets zip; \
     pecl install redis-6.3.0; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
     mkdir /usr/src/php/ext/swoole && \
-    curl -sfL https://github.com/swoole/swoole-src/archive/v6.2.0.tar.gz -o swoole.tar.gz && \
+    curl -sfL https://github.com/swoole/swoole-src/archive/v6.1.7.tar.gz -o swoole.tar.gz && \
     tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
     docker-php-ext-install -j$(nproc) swoole && \
     rm -f swoole.tar.gz $HOME/.composer/*-old.phar && \
