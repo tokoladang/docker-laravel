@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - php85
 
 env:
   REGISTRY_IMAGE: ghcr.io/tokoladang/laravel
