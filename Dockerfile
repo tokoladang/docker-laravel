@@ -22,6 +22,11 @@ RUN \
     tzdata \
     libzip \
     libpq \
+    freetype \
+    libpng \
+    libwebp \
+    libjpeg-turbo \
+    libxpm \
     unzip \
     libstdc++ \
     supervisor
@@ -39,9 +44,15 @@ RUN set -ex; \
         pcre2-dev \
         postgresql-dev \
         zlib-dev \
+        libwebp-dev \
+        libxpm-dev \
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
     ; \
     \
-    docker-php-ext-install -j$(nproc) bcmath bz2 exif pcntl pdo_pgsql sockets zip; \
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
+    docker-php-ext-install -j$(nproc) bcmath bz2 exif gd pcntl pdo_pgsql sockets zip; \
     pecl install redis-6.3.0; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
