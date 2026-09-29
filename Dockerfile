@@ -69,9 +69,7 @@ RUN set -ex; \
     docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
     docker-php-ext-install -j$(nproc) bcmath bz2 exif gd pcntl pdo_pgsql sockets zip; \
     pecl install redis-${REDIS_VERSION}; \
-    pecl install grpc-${GRPC_VERSION}; \
-    pecl install protobuf-${PROTOBUF_VERSION}; \
-    docker-php-ext-enable redis grpc protobuf; \
+    docker-php-ext-enable redis; \
     docker-php-source extract && \
     mkdir /usr/src/php/ext/swoole && \
     curl -sfL https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -o swoole.tar.gz && \
