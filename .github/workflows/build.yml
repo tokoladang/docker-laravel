@@ -15,7 +15,7 @@ jobs:
       matrix: ${{ steps.platforms.outputs.matrix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Create matrix
         id: platforms
@@ -28,16 +28,20 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY_IMAGE }}
 
-      - name: Rename meta bake definition file
+      - name: Combine metadata bake definitions
         run: |
-          mv "${{ steps.meta.outputs.bake-file }}" "/tmp/bake-meta.json"          
+          jq -s 'reduce .[] as $file ({target: {"docker-metadata-action": {}}}; .target."docker-metadata-action" += $file.target."docker-metadata-action")' \
+            "${{ steps.meta.outputs.bake-file-tags }}" \
+            "${{ steps.meta.outputs.bake-file-labels }}" \
+            "${{ steps.meta.outputs.bake-file-annotations }}" \
+            > /tmp/bake-meta.json
 
       - name: Upload meta bake definition
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: bake-meta
           path: /tmp/bake-meta.json
@@ -59,19 +63,19 @@ jobs:
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Download meta bake definition
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: bake-meta
           path: /tmp
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Log into github registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -79,8 +83,9 @@ jobs:
 
       - name: Build
         id: bake
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v7
         with:
+          source: .
           files: |
             ./docker-bake.hcl
             /tmp/bake-meta.json
@@ -99,7 +104,7 @@ jobs:
           touch "/tmp/digests/${digest#sha256:}"
 
       - name: Upload digest
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: digests-${{ env.PLATFORM_PAIR }}
           path: /tmp/digests/*
@@ -112,23 +117,23 @@ jobs:
       - build
     steps:
       - name: Download meta bake definition
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: bake-meta
           path: /tmp
 
       - name: Download digests
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: /tmp/digests
           pattern: digests-*
           merge-multiple: true
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Log into github registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
