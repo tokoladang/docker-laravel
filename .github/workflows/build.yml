@@ -45,7 +45,7 @@ jobs:
           retention-days: 1
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     needs:
       - prepare
     strategy:
@@ -66,9 +66,6 @@ jobs:
         with:
           name: bake-meta
           path: /tmp
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
