@@ -39,7 +39,7 @@ if [ "${1:-}" = 'app' ]; then
     service_pids=
 
     if [ "${ENABLE_SERVER:-0}" = "1" ]; then
-        start_service server su-exec ladang php -d variables_order=EGPCS /home/ladang/app/artisan octane:start --host=0.0.0.0 --workers="${OCTANE_WORKER}" --task-workers="${OCTANE_TASK_WORKER}" --max-requests="${OCTANE_MAX_REQUESTS}"
+        start_service server su-exec ladang php -d variables_order=EGPCS /home/ladang/app/artisan octane:start --host=0.0.0.0 --workers="${OCTANE_WORKER}" --max-requests="${OCTANE_MAX_REQUESTS}"
     fi
 
     if [ "${ENABLE_WORKER:-0}" = "1" ]; then

@@ -8,16 +8,20 @@ ARG OTEL_VERSION=0.7.0
 ARG PROTOBUF_VERSION=5.36.2
 
 ENV ENABLE_SERVER=1
-ENV ENABLE_WORKER=0
-
-# for development only
-ENV ENABLE_AUTORELOAD=0
-
-ENV OCTANE_WORKER=auto
-ENV OCTANE_TASK_WORKER=auto
-ENV OCTANE_MAX_REQUESTS=500
-
-ENV TZ=Asia/Jakarta
+    ENABLE_WORKER=0
+    # for development only
+    ENABLE_AUTORELOAD=0
+    # octane default worker and max request
+    OCTANE_WORKER=1
+    OCTANE_MAX_REQUESTS=500
+    # Time Zone
+    TZ=Asia/Jakarta
+    # default otel env
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    # https://opentelemetry.io/docs/zero-code/php/distro/reference/long-running-server/#complete-example
+    OTEL_PHP_TRANSACTION_SPAN_ENABLED_CLI=false \
+    OTEL_PHP_INFERRED_SPANS_ENABLED=false \
+    OTEL_PHP_TRACES_PROCESSOR=simple
 
 RUN set -ex; \
     \
@@ -64,13 +68,6 @@ RUN set -ex; \
     rm -f /tmp/otel-distro.apk swoole.tar.gz $HOME/.composer/*-old.phar && \
     docker-php-source delete && \
     apk del .build-deps
-
-# default otel env
-ENV OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-    # https://opentelemetry.io/docs/zero-code/php/distro/reference/long-running-server/#complete-example
-    OTEL_PHP_TRANSACTION_SPAN_ENABLED_CLI=false \
-    OTEL_PHP_INFERRED_SPANS_ENABLED=false \
-    OTEL_PHP_TRACES_PROCESSOR=simple
 
 RUN addgroup -g 1000 -S ladang && \
     adduser -s /bin/sh -D -u 1000 -S ladang -G ladang && \
