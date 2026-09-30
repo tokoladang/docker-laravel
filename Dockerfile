@@ -7,15 +7,15 @@ ARG SWOOLE_VERSION=6.2.3
 ARG OTEL_VERSION=0.7.0
 ARG PROTOBUF_VERSION=5.36.2
 
-ENV ENABLE_SERVER=1
-    ENABLE_WORKER=0
+ENV ENABLE_SERVER=1 \
+    ENABLE_WORKER=0 \
     # for development only
-    ENABLE_AUTORELOAD=0
+    ENABLE_AUTORELOAD=0 \
     # octane default worker and max request
-    OCTANE_WORKER=1
-    OCTANE_MAX_REQUESTS=500
+    OCTANE_WORKER=1 \
+    OCTANE_MAX_REQUESTS=500 \
     # Time Zone
-    TZ=Asia/Jakarta
+    TZ=Asia/Jakarta \
     # default otel env
     OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
     # https://opentelemetry.io/docs/zero-code/php/distro/reference/long-running-server/#complete-example
