@@ -27,7 +27,8 @@ RUN set -ex; \
     tzdata \
     libpq \
     libstdc++ \
-    supervisor
+    tini \
+    su-exec
 
 # Install dependencies
 RUN set -ex; \
@@ -64,6 +65,13 @@ RUN set -ex; \
     docker-php-source delete && \
     apk del .build-deps
 
+# default otel env
+ENV OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    # https://opentelemetry.io/docs/zero-code/php/distro/reference/long-running-server/#complete-example
+    OTEL_PHP_TRANSACTION_SPAN_ENABLED_CLI=false \
+    OTEL_PHP_INFERRED_SPANS_ENABLED=false \
+    OTEL_PHP_TRACES_PROCESSOR=simple
+
 RUN addgroup -g 1000 -S ladang && \
     adduser -s /bin/sh -D -u 1000 -S ladang -G ladang && \
     mkdir /home/ladang/app && \
@@ -71,11 +79,9 @@ RUN addgroup -g 1000 -S ladang && \
 
 COPY ./rootfilesystem/ /
 
-ENV PHP_MEMORY_LIMIT=512M
-
 WORKDIR /home/ladang/app
 
 EXPOSE 8000
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "-g", "--", "/entrypoint.sh"]
 CMD ["app"]
