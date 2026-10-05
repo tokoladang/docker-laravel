@@ -54,8 +54,6 @@ RUN addgroup -g 1000 -S ladang && \
 
 COPY ./rootfilesystem/ /
 
-ENV OCTANE_WORKER=auto
-
 WORKDIR /home/ladang/app
 
 EXPOSE 8000

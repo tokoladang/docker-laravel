@@ -39,7 +39,7 @@ if [ "${1:-}" = 'app' ]; then
     service_pids=
 
     if [ "${ENABLE_SERVER:-0}" = "1" ]; then
-        start_service server su-exec ladang php /home/ladang/app/artisan octane:start --workers="${OCTANE_WORKER:-auto}"
+        start_service server su-exec ladang php /home/ladang/app/artisan octane:start
     fi
 
     if [ "${ENABLE_WORKER:-0}" = "1" ]; then
