@@ -7,7 +7,6 @@ ENV ENABLE_SERVER=1 \
     ENABLE_WORKER=0 \
     # for development only
     ENABLE_AUTORELOAD=0 \
-    OCTANE_WORKER=auto \
     TZ=Asia/Jakarta
 
 RUN set -ex; \
