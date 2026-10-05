@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - tini
 
 env:
   REGISTRY_IMAGE: ghcr.io/tokoladang/laravel
