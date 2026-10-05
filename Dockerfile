@@ -1,63 +1,44 @@
 FROM php:8.5-cli-alpine
 
-ENV ENABLE_SERVER=1
-ENV ENABLE_WORKER=0
+ARG REDIS_VERSION=6.3.0 \
+    SWOOLE_VERSION=6.2.3
 
-# for development only
-ENV ENABLE_AUTORELOAD=0
+ENV ENABLE_SERVER=1 \
+    ENABLE_WORKER=0 \
+    # for development only
+    ENABLE_AUTORELOAD=0 \
+    TZ=Asia/Jakarta
 
-ENV OCTANE_WORKER=auto
-ENV OCTANE_TASK_WORKER=auto
-ENV OCTANE_MAX_REQUESTS=500
-
-ENV TZ=Asia/Jakarta
-
-RUN \
-    curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
-    chmod +x /usr/bin/composer                                                                     && \
-    composer self-update --clean-backups && \
+RUN set -ex; \
+    \
     apk update && \
     apk add --no-cache \
     inotify-tools \
     tzdata \
-    libzip \
     libpq \
-    freetype \
-    libpng \
-    libwebp \
-    libjpeg-turbo \
-    libxpm \
-    unzip \
     libstdc++ \
     supervisor
 
-# Install dependencies
 RUN set -ex; \
     \
+    curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+    chmod +x /usr/bin/composer                                                                     && \
+    composer self-update --clean-backups && \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
-        bzip2-dev \
         libtool \
-        libzip-dev \
         linux-headers \
-        pcre-dev \
         pcre2-dev \
         postgresql-dev \
         zlib-dev \
-        libwebp-dev \
-        libxpm-dev \
-        freetype-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
     ; \
     \
-    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install -j$(nproc) bcmath bz2 exif gd pcntl pdo_pgsql sockets zip; \
-    pecl install redis-6.3.0; \
+    docker-php-ext-install -j$(nproc) pcntl pdo_pgsql sockets; \
+    pecl install redis-${REDIS_VERSION}; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
     mkdir /usr/src/php/ext/swoole && \
-    curl -sfL https://github.com/swoole/swoole-src/archive/v6.2.3.tar.gz -o swoole.tar.gz && \
+    curl -sfL https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -o swoole.tar.gz && \
     tar xfz swoole.tar.gz --strip-components=1 -C /usr/src/php/ext/swoole && \
     docker-php-ext-install -j$(nproc) swoole && \
     rm -f swoole.tar.gz $HOME/.composer/*-old.phar && \
