@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - tini
+      - otel
 
 env:
   REGISTRY_IMAGE: ghcr.io/tokoladang/laravel
