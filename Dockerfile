@@ -24,6 +24,7 @@ RUN set -ex; \
     \
     apk update && \
     apk add --no-cache \
+    icu-libs \
     inotify-tools \
     tzdata \
     libpq \
@@ -46,6 +47,7 @@ RUN set -ex; \
     apk add --allow-untrusted --no-cache /tmp/otel-distro.apk && \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
+        icu-dev \
         libtool \
         linux-headers \
         pcre2-dev \
