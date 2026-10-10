@@ -17,8 +17,10 @@ RUN set -ex; \
     tzdata \
     libpq \
     libstdc++ \
-    supervisor
+    tini \
+    su-exec
 
+# Install dependencies
 RUN set -ex; \
     \
     curl -sfL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
@@ -56,5 +58,5 @@ WORKDIR /home/ladang/app
 
 EXPOSE 8000
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "-g", "--", "/entrypoint.sh"]
 CMD ["app"]
