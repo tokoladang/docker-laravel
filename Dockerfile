@@ -13,6 +13,7 @@ RUN set -ex; \
     \
     apk update && \
     apk add --no-cache \
+    icu-libs \
     inotify-tools \
     tzdata \
     libpq \
@@ -28,6 +29,7 @@ RUN set -ex; \
     composer self-update --clean-backups && \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
+        icu-dev \
         libtool \
         linux-headers \
         pcre2-dev \
