@@ -35,7 +35,7 @@ RUN set -ex; \
         zlib-dev \
     ; \
     \
-    docker-php-ext-install -j$(nproc) pcntl pdo_pgsql sockets; \
+    docker-php-ext-install -j$(nproc) intl pcntl pdo_pgsql sockets; \
     pecl install redis-${REDIS_VERSION}; \
     docker-php-ext-enable redis; \
     docker-php-source extract && \
