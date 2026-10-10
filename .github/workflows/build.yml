@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-      - tini
+      - otel
+      - spv
 
 env:
   REGISTRY_IMAGE: ghcr.io/tokoladang/laravel
