@@ -1,4 +1,4 @@
-FROM php:8.5-cli-alpine
+FROM php:8.5.12-cli-alpine
 
 ARG REDIS_VERSION=6.3.0 \
     SWOOLE_VERSION=6.2.3
